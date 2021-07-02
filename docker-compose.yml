@@ -18,6 +18,7 @@ services:
     image: postgres:13.2
     restart: always
     volumes:
+      - ./db/postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
       - ./venv/db:/var/lib/postgresql/data
     environment: 
       POSTGRES_PASSWORD: example
@@ -26,5 +27,5 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8000:8000
+      - 8080:8080
     
