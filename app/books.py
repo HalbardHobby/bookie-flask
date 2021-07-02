@@ -2,17 +2,23 @@ from flask import Blueprint
 
 bp = Blueprint('books', __name__, url_prefix=None)
 
+@bp.route('/', methods=['GET'])
+@bp.route('/index', methods=['GET'])
 def list_boooks():
-    pass
+    return "list books"
 
-def create_book():
-    pass
+@bp.route('/<book_id>', methods=['POST'])
+def create_book(book_id):
+    return "create book"
 
-def read_book():
-    pass
+@bp.route('/<book_id>', methods=['GET'])
+def read_book(book_id):
+    return "book info"
 
-def update_book():
-    pass
+@bp.route('/<book_id>', methods=['PUT'])
+def update_book(book_id):
+    return "book updated"
 
-def delete_book():
-    pass
+@bp.route('/<book_id>', methods=['DELETE'])
+def delete_book(book_id):
+    return "book deleted"
