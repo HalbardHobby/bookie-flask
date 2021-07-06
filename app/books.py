@@ -13,8 +13,15 @@ def list_boooks():
 
 @bp.route('/', methods=['POST'])
 def create_book():
-
-    return "create book"
+    req = request.get_json()
+    try:
+        new_book = Book(name=req['name'], author=req['author'], isbn=req['isbn'],
+                        year=req['year'], summary=req['summary'])
+        db.session.add(new_book)
+        db.session.commit()
+        return new_book.to_dict(), 201
+    except:
+        return {"message": "Bad request"}, 400
 
 @bp.route('/<book_id>', methods=['GET'])
 def read_book(book_id):
