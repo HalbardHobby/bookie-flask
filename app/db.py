@@ -7,10 +7,20 @@ db = SQLAlchemy()
 
 class Book(db.Model):
     __tablename__ = "book"
-    
+
     id = db.Column('id', UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, nullable=False)
     name = db.Column('name', db.Text, nullable=False)
     author = db.Column('author', db.Text, nullable=False)
     isbn = db.Column('isbn', db.String(20))
     year = db.Column('year', db.Integer)
     summary= db.Column('summary', db.Text)
+
+    def to_dict(self):
+        return {
+            'id' : self.id,
+            'name' : self.name, 
+            'author' : self.author,
+            'isbn' : self.isbn,
+            'year' : self.year,
+            'summary' : self.summary
+        }
