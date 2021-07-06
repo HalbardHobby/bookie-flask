@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from sqlalchemy.orm import session
 from .db import db, Book
 
 bp = Blueprint('books', __name__, url_prefix=None)
@@ -31,7 +32,23 @@ def read_book(book_id):
 
 @bp.route('/<book_id>', methods=['PUT'])
 def update_book(book_id):
-    return "book updated" + book_id
+    book = Book.query.filter_by(id = book_id).first()
+    if book is None:
+        return {"message": "Not found"}, 404
+
+    try:
+        req = request.get_json()
+        book.name = req['name']
+        book.author = req['author']
+        book.isbn = req['isbn']
+        book.year = req['year']
+        book.summary = req['summary']
+        db.session.commit()
+
+        return book.to_dict(), 200
+    except:
+        return {"message": "Bad request"}, 400
+
 
 @bp.route('/<book_id>', methods=['DELETE'])
 def delete_book(book_id):
