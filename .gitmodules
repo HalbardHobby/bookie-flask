@@ -1,3 +1,3 @@
 [submodule "terraform-eks-sample-deployment"]
 	path = terraform-eks-sample-deployment
-	url = git@github.com:HalbardHobby/terraform-eks-sample-deployment
+	url = https://github.com/HalbardHobby/terraform-eks-sample-deployment.git
