@@ -12,6 +12,7 @@ pipeline {
                     cd terraform-eks-sample-deployment
                     terraform init
                     terraform apply --auto-approve
+                    aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
                     cd ..
                     '''
                 }
@@ -38,7 +39,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    kubectl --kubeconfig terraform-eks-sample-deployment/kubeconfig_pipeline-eks-cluster apply -f kubernetes-sample
+                    kubectl apply -f kubernetes-sample
                     '''
                 }
             }
