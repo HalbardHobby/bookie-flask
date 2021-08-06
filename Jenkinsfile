@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    kubectl --kubeconfig terraform-eks-sample-deployment/kubeconfig_pipeline-eke-cluster apply -f kubernetes-sample
+                    kubectl --kubeconfig terraform-eks-sample-deployment/kubeconfig_pipeline-eks-cluster apply -f kubernetes-sample
                     '''
                 }
             }
