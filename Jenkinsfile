@@ -12,6 +12,8 @@ pipeline {
                     cd terraform-eks-sample-deployment
                     terraform init
                     terraform apply --auto-approve
+                    aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
+                    cd ..
                     '''
                 }
             }
@@ -30,6 +32,15 @@ pipeline {
             steps {
                 script {
                     sh 'docker rmi $REGISTRY'
+                }
+            }
+        }
+        stage('deploy to kubernetes'){
+            steps {
+                script {
+                    sh '''
+                    kubectl apply -f kubernetes-sample
+                    '''
                 }
             }
         }
