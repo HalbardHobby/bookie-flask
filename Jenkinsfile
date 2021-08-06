@@ -12,7 +12,6 @@ pipeline {
                     cd terraform-eks-sample-deployment
                     terraform init
                     terraform apply --auto-approve
-                    aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
                     cd ..
                     '''
                 }
@@ -39,7 +38,10 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    kubectl apply -f kubernetes-sample
+                    curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
+                    chmod +x ./aws-iam-authenticator
+                    mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$PATH:$HOME/bin
+                    kubectl --kubeconfig terraform-eks-sample-deployment/kubeconfig_pipeline-eks-cluster apply -f kubernetes-sample
                     '''
                 }
             }
