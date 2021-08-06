@@ -9,7 +9,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    cd terraform-eks-sample
+                    cd terraform-eks-sample-deployment
                     terraform init
                     terraform apply --auto-approve
                     '''
