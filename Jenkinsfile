@@ -5,23 +5,28 @@ pipeline {
         DOCKERHUB_CREDENTIALS = 'halbard-dockerhub'
     }
     stages {
-        stage('build') {
+        stage('check infraestructure') {
             steps {
                 script {
-                	def dockerImage = docker.build REGISTRY
+                    sh '''
+                    cd terraform-eks-sample
+                    terraform init
+                    terraform apply --auto-approve
+                    '''
                 }
             }
         }
-        stage('push to hub') {
+        stage('build image') {
             steps {
                 script {
+                	def dockerImage = docker.build REGISTRY
                     docker.withRegistry( '', DOCKERHUB_CREDENTIALS ) { 
                         sh 'docker push $REGISTRY:latest'
                     }
                 }
             }
         }
-        stage('clean up') {
+        stage('clean up image') {
             steps {
                 script {
                     sh 'docker rmi $REGISTRY'
