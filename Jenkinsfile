@@ -12,7 +12,6 @@ pipeline {
                     cd terraform-eks-sample-deployment
                     terraform init
                     terraform apply --auto-approve
-                    terraform output -raw kubectl_config > ~/.kube/config
                     cd ..
                     '''
                 }
@@ -39,7 +38,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    kubectl apply -f kubernetes-sample
+                    kubectl --kubeconfig terraform-eks-sample-deployment/kubeconfig_pipeline-eke-cluster apply -f kubernetes-sample
                     '''
                 }
             }
